@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phần Mềm Làm Bài Tập Tổng Hợp</title>
+    <style>
+        /* ===================================================
+           CẤU HÌNH MÀU SẮC & GIAO DIỆN CHÍNH (MÀN HÌNH)
+           =================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #E8F1F5;
+            color: #2C3E50;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .exam-container {
+            width: 100%;
+            max-width: 1100px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-top: 6px solid #2C5E8A;
+        }
+
+        /* HEADER & TIÊU ĐỀ */
+        .header-title {
+            text-align: center;
+            color: #1A365D;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-title h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .header-title input.subject-title-input {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2C5E8A;
+            text-align: center;
+            border: none;
+            border-bottom: 2px dashed #2C5E8A;
+            outline: none;
+            width: 80%;
+            padding: 4px;
+            background: transparent;
+            text-transform: uppercase;
+        }
+
+        .header-title input.subject-title-input:focus {
+            border-bottom-style: solid;
+            background-color: #F7FAFC;
+        }
+
+        /* KHU VỰC THÔNG TIN SINH VIÊN */
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            background-color: #DDEBF7;
+            padding: 18px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border: 1px solid #B8D1E5;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #1A365D;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: 1px solid #A0AEC0;
+            border-radius: 4px;
+            font-size: 15px;
+            outline: none;
+            background-color: #FFFFFF;
+        }
+
+        .form-group input:focus {
+            border-color: #2C5E8A;
+            box-shadow: 0 0 5px rgba(44, 94, 138, 0.3);
+        }
+
+        /* KHUNG LÀM BÀI KHU VỰC CHÍNH */
+        .workspace {
+            background-color: #FEF9E7;
+            border: 2px solid #F39C12;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .workspace-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #D68910;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* BLOCK MỖI CÂU HỎI / BÀI TẬP */
+        .nv-block {
+            background-color: #FFFFFF;
+            border: 1px solid #CBD5E0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .nv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #E8F1F5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            border-left: 4px solid #2C5E8A;
+        }
+
+        .nv-title {
+            font-weight: bold;
+            color: #1A365D;
+            font-size: 15px;
+        }
+
+        /* TEXTAREA TỰ GIÃN CHIỀU CAO TRÊN MÀN HÌNH */
+        .auto-resize-textarea {
+            width: 100%;
+            border: 1px solid #CBD5E0;
+            border-radius: 4px;
+            padding: 8px 10px;
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            overflow-y: hidden;
+            font-family: inherit;
+            line-height: 1.5;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        .nv-title-textarea {
+            font-weight: 600;
+            min-height: 38px;
+            background-color: #FFFFFF;
+            margin-bottom: 12px;
+            color: #2C3E50;
+        }
+
+        .nv-title-textarea:focus {
+            border-color: #2C5E8A;
+            box-shadow: 0 0 4px rgba(44, 94, 138, 0.2);
+        }
+
+        /* THẺ DIV HIỂN THỊ VĂN BẢN KHI IN (MẶC ĐỊNH ẨN TRÊN MÀN HÌNH) */
+        .print-text-display {
+            display: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #000;
+        }
+
+        /* KHUNG DIỄN GIẢI / LỜI GIẢI BỔ SUNG */
+        .explanation-box {
+            background-color: #FFFDF0;
+            border: 1px dashed #F1C40F;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .explanation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .explanation-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .explanation-box label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #B7950B;
+        }
+
+        .explanation-textarea {
+            min-height: 80px;
+            background-color: #FFFFFF;
+            font-size: 13.5px;
+        }
+
+        /* BẢNG DIỄN GIẢI TẠO THÊM */
+        .custom-table-builder {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #FFF9C4;
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #FBC02D;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .custom-table-builder input[type="number"] {
+            width: 50px;
+            padding: 4px;
+            border: 1px solid #CBD5E0;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .explanation-custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+            background-color: #FFFFFF;
+        }
+
+        .explanation-custom-table td {
+            border: 1px solid #CBD5E0;
+            padding: 4px;
+        }
+
+        .explanation-custom-table input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 4px;
+            font-size: 13px;
+            background: transparent;
+        }
+
+        .explanation-custom-table input:focus {
+            background-color: #EBF5FB;
+        }
+
+        /* ===================================================
+           GIAO DIỆN CÂU HỎI TRẮC NGHIỆM BỔ SUNG
+           =================================================== */
+        .mcq-builder-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background: #F4F6F7;
+            border: 1px solid #BDC3C7;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .mcq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #2E4053;
+        }
+
+        .mcq-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mcq-option-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFFFF;
+            padding: 6px 10px;
+            border: 1px solid #D5D8DC;
+            border-radius: 4px;
+        }
+
+        .mcq-option-item input[type="radio"] {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .mcq-option-item label {
+            font-weight: bold;
+            color: #1B4F72 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .mcq-option-item textarea {
+            flex: 1;
+            min-height: 32px;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .print-mcq-display {
+            display: none;
+            margin-top: 8px;
+            font-size: 10pt;
+        }
+
+        .print-mcq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .print-mcq-option {
+            padding: 2px 4px;
+        }
+
+        .print-mcq-option.selected {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* ===================================================
+           CẤU TRÚC VÀ GIAO DIỆN CÔNG THỨC TOÁN HỌC
+           =================================================== */
+        .formula-builder-container {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .formula-builder-toolbar {
+            background: #EBF5FB;
+            border: 1px solid #AED6F1;
+            padding: 8px;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .formula-builder-toolbar span {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1B4F72;
+            margin-right: 5px;
+        }
+
+        .btn-formula-op {
+            background-color: #FFFFFF;
+            border: 1px solid #2980B9;
+            color: #2980B9;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-formula-op:hover {
+            background-color: #2980B9;
+            color: #FFFFFF;
+        }
+
+        .formula-container {
+            background: #FFFFFF;
+            border: 1px solid #BDC3C7;
+            border-top: none;
+            padding: 10px;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .formula-editor {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-height: 40px;
+            padding: 6px;
+            border: 1px dashed #A6ACAF;
+            background-color: #FAFAFA;
+            border-radius: 4px;
+        }
+
+        /* Phân số */
+        .math-fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        .math-fraction .numerator {
+            border-bottom: 1.5px solid #000;
+            padding-bottom: 2px;
+            margin-bottom: 2px;
+        }
+
+        .math-fraction input {
+            min-width: 40px;
+            width: auto;
+            text-align: center;
+            border: 1px solid #CBD5E0;
+            border-radius: 3px;
+            padding: 2px 4px;
+            font-size: 13px;
+            background: #FFF;
+            box-sizing: content-box;
+        }
+
+        /* Lũy thừa */
+        .math-power {
+            display: inline-flex;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .math-power input.base-input {
+            min-width: 35px;
+            width: auto;
+            text-align: center;
+            border: 1px solid #CBD5E0;
+            border-radius: 3px;
+            padding: 2px 4px;
+            font-size: 13px;
+            box-sizing: content-box;
+        }
+
+        .math-power input.exponent-input {
+            min-width: 20px;
+            width: auto;
+            text-align: center;
+            border: 1px solid #CBD5E0;
+            border-radius: 3px;
+            padding: 1px 2px;
+            font-size: 10px;
+            margin-left: 2px;
+            transform: translateY(-5px);
+            box-sizing: content-box;
+        }
+
+        /* Input thông thường trong công thức */
+        .formula-editor input.math-input {
+            min-width: 40px;
+            width: auto;
+            text-align: center;
+            border: 1px solid #CBD5E0;
+            border-radius: 3px;
+            padding: 3px 5px;
+            font-size: 13px;
+            box-sizing: content-box;
+        }
+
+        .formula-editor .math-symbol {
+            font-weight: bold;
+            font-size: 15px;
+            color: #2C3E50;
+            padding: 0 2px;
+        }
+
+        .formula-item-wrapper {
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            margin: 2px 0;
+        }
+
+        .btn-remove-elem {
+            background: #E74C3C;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            font-size: 9px;
+            line-height: 14px;
+            text-align: center;
+            cursor: pointer;
+            margin-left: 2px;
+            display: none;
+        }
+
+        .formula-item-wrapper:hover .btn-remove-elem {
+            display: inline-block;
+        }
+
+        /* DIỄN GIẢI KHI IN CÔNG THỨC */
+        .print-formula-display {
+            display: none;
+            margin-top: 6px;
+            font-size: 11pt;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        /* NÚT BẤM (BUTTONS) */
+        .btn {
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-add-nv {
+            background-color: #27AE60;
+            color: white;
+            font-size: 15px;
+            padding: 10px 20px;
+        }
+
+        .btn-add-nv:hover { background-color: #219150; }
+
+        .btn-add-mcq {
+            background-color: #2980B9;
+            color: white;
+            padding: 4px 8px;
+            font-size: 11.5px;
+        }
+
+        .btn-add-mcq:hover { background-color: #1F618D; }
+
+        .btn-add-table {
+            background-color: #D35400;
+            color: white;
+            padding: 4px 8px;
+            font-size: 11.5px;
+        }
+
+        .btn-add-table:hover { background-color: #A04000; }
+
+        .btn-add-formula {
+            background-color: #8E44AD;
+            color: white;
+            padding: 4px 8px;
+            font-size: 11.5px;
+        }
+
+        .btn-add-formula:hover { background-color: #71368A; }
+
+        .btn-delete-table {
+            background-color: #FF3B30;
+            color: white;
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+
+        .btn-delete-table:hover { background-color: #E74C3C; }
+
+        .btn-delete-nv {
+            background-color: #FF3B30;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-delete-nv:hover { background-color: #D63031; }
+
+        .btn-print {
+            background-color: #FF3B30;
+            color: white;
+            font-size: 16px;
+            padding: 12px 25px;
+            box-shadow: 0 4px 6px rgba(255, 59, 48, 0.3);
+        }
+
+        .btn-print:hover { background-color: #D63031; }
+
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .text-center { text-align: center; }
+
+        /* KHU VỰC GHI CHÚ BẢN QUYỀN */
+        .footer-copyright {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed #CBD5E0;
+            text-align: center;
+            font-size: 12px;
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        .footer-copyright a {
+            color: #2C5E8A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-copyright a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===================================================
+           ĐỊNH DẠNG TRANG IN TỐI ƯU DÒNG & DIỆN TÍCH (PRINT CSS)
+           =================================================== */
+        @page {
+            size: A4;
+            margin: 10mm 10mm 10mm 10mm;
+        }
+
+        @media print {
+            * { box-sizing: border-box; }
+
+            body {
+                background-color: #FFFFFF !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 11pt;
+                line-height: 1.15 !important;
+                color: #000000 !important;
+            }
+
+            .exam-container {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .header-title { margin-bottom: 10px !important; }
+            .header-title h2 { font-size: 14pt !important; margin-bottom: 2px !important; }
+            .header-title input.subject-title-input {
+                font-size: 16pt !important;
+                border: none !important;
+                width: 100% !important;
+            }
+
+            .student-info-grid {
+                background-color: #F8F9FA !important;
+                border: 1px solid #000 !important;
+                padding: 6px 10px !important;
+                margin-bottom: 10px !important;
+                gap: 8px !important;
+            }
+
+            .form-group label { font-size: 9pt !important; margin-bottom: 2px !important; }
+            .form-group input {
+                padding: 3px 6px !important;
+                font-size: 10pt !important;
+                border: none !important;
+                border-bottom: 1px dotted #000 !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+            }
+
+            .workspace {
+                background-color: #FFFFFF !important;
+                border: none !important;
+                padding: 0 !important;
+                margin-bottom: 10px !important;
+            }
+
+            .workspace-title { display: none !important; }
+
+            .nv-block {
+                border: 1px solid #000 !important;
+                page-break-inside: avoid;
+                margin-bottom: 8px !important;
+                padding: 6px 8px !important;
+                border-radius: 0 !important;
+            }
+
+            .nv-header {
+                background-color: #EAEDED !important;
+                border-left: 3px solid #000 !important;
+                padding: 3px 6px !important;
+                margin-bottom: 6px !important;
+                min-height: auto !important;
+            }
+
+            .nv-title { font-size: 10.5pt !important; line-height: 1.2 !important; }
+
+            .explanation-custom-table td {
+                border: 1px solid #000 !important;
+                padding: 3px 6px !important;
+                font-size: 9.5pt !important;
+                line-height: 1.15 !important;
+            }
+
+            .explanation-custom-table input {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                font-size: 9.5pt !important;
+                height: auto !important;
+            }
+
+            .explanation-box {
+                border: 1px solid #999 !important;
+                background-color: #FFF !important;
+                padding: 4px 6px !important;
+                margin-top: 4px !important;
+                border-radius: 0 !important;
+            }
+
+            .explanation-box label {
+                font-size: 8.5pt !important;
+                margin-bottom: 2px !important;
+                color: #000 !important;
+            }
+
+            .auto-resize-textarea, .mcq-builder-container { display: none !important; }
+
+            .print-text-display {
+                display: block !important;
+                padding: 1px 0 !important;
+                font-size: 10pt !important;
+                line-height: 1.2 !important;
+                color: #000 !important;
+            }
+
+            .print-mcq-display {
+                display: block !important;
+            }
+
+            .print-formula-display {
+                display: flex !important;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                margin-bottom: 4px;
+            }
+
+            /* Định dạng phân số khi in */
+            .print-formula-display .math-fraction {
+                display: inline-flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                vertical-align: middle !important;
+                padding: 0 4px !important;
+            }
+
+            .print-formula-display .math-fraction .numerator {
+                border-bottom: 1px solid #000 !important;
+                padding-bottom: 1px !important;
+                margin-bottom: 1px !important;
+            }
+
+            .print-formula-display .math-power {
+                display: inline-flex !important;
+                align-items: flex-start !important;
+            }
+
+            .print-formula-display sup {
+                font-size: 8pt !important;
+                vertical-align: super !important;
+            }
+
+            .footer-copyright {
+                border-top: 1px solid #000 !important;
+                padding-top: 8px !important;
+                margin-top: 15px !important;
+                font-size: 9pt !important;
+                color: #000 !important;
+            }
+
+            .btn, .action-bar, .btn-col, .hide-on-print, .custom-table-builder, .formula-builder-toolbar, .formula-container, .btn-remove-elem {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="exam-container">
+        <!-- TIÊU ĐỀ BÀI KIỂM TRA -->
+        <div class="header-title">
+            <h2>BÀI TẬP / BÀI KIỂM TRA</h2>
+            <input type="text" class="subject-title-input" value="MÔN HỌC..." placeholder="NHẬP TÊN MÔN HỌC TẠI ĐÂY">
+        </div>
+
+        <!-- THÔNG TIN SINH VIÊN -->
+        <div class="student-info-grid">
+            <div class="form-group">
+                <label for="fullName">HỌ VÀ TÊN SINH VIÊN:</label>
+                <input type="text" id="fullName" placeholder="Nhập đầy đủ họ và tên...">
+            </div>
+            <div class="form-group">
+                <label for="studentId">MÃ SỐ SINH VIÊN:</label>
+                <input type="text" id="studentId" placeholder="Nhập MSSV...">
+            </div>
+            <div class="form-group">
+                <label for="examCode">MÃ ĐỀ THI:</label>
+                <input type="text" id="examCode" placeholder="Mã đề / Lớp...">
+            </div>
+        </div>
+
+        <!-- KHUNG LÀM BÀI CỦA SINH VIÊN -->
+        <div class="workspace">
+            <div class="workspace-title">
+                <span>KHUNG LÀM BÀI </span>
+            </div>
+
+            <div id="nvContainer">
+                <!-- Các khối Câu hỏi / Bài tập sẽ hiển thị tại đây -->
+            </div>
+
+            <button class="btn btn-add-nv" onclick="addNghiepVu()">
+                ➕ Thêm Câu mới
+            </button>
+        </div>
+
+        <!-- NÚT XUẤT FILE PDF / IN BÀI LÀM -->
+        <div class="action-bar">
+            <button class="btn btn-print" onclick="exportPDF()">
+                🖨️ IN FILE PDF / NỘP BÀI LÀM
+            </button>
+        </div>
+
+        <!-- KHU VỰC GHI CHÚ BẢN QUYỀN -->
+        <div class="footer-copyright">
+            Phần mềm được phát triển bởi GV Nguyễn Khánh Dương. Mail: <a href="mailto:nguyenkhanhduong0111@gmail.com">nguyenkhanhduong0111@gmail.com</a>. Phần mềm dùng cho giảng dạy và học tập.
+        </div>
+    </div>
+
+    <!-- SCRIPT XỬ LÝ TÍNH NĂNG -->
+    <script>
+        let nvCount = 0;
+        let formulaCount = 0;
+        let tableCount = 0;
+        let mcqCount = 0;
+
+        // Khởi tạo mặc định 1 câu hỏi trống ban đầu khi tải trang
+        window.onload = function() {
+            addNghiepVu();
+        };
+
+        // Hàm co giãn chiều cao của Textarea theo nội dung khi gõ
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Hàm co giãn độ rộng ô nhập liệu trong công thức theo nội dung gõ
+        function autoResizeFormulaInput(input) {
+            const minWidth = input.getAttribute('placeholder') ? (input.getAttribute('placeholder').length * 9 + 10) : 30;
+            const currentLen = input.value.length;
+            const newWidth = Math.max(minWidth, currentLen * 9.5 + 10);
+            input.style.width = newWidth + 'px';
+        }
+
+        // Hàm thêm 1 Khối Câu hỏi / Bài tập
+        function addNghiepVu() {
+            nvCount++;
+            const container = document.getElementById('nvContainer');
+            const nvDiv = document.createElement('div');
+            nvDiv.className = 'nv-block';
+            nvDiv.id = `nv-block-${nvCount}`;
+
+            nvDiv.innerHTML = `
+                <div class="nv-header">
+                    <span class="nv-title">CÂU  <span class="nv-index"></span></span>
+                    <button class="btn btn-delete-nv btn-col" onclick="deleteNghiepVu('${nvDiv.id}')">❌ Xóa Câu Này</button>
+                </div>
+
+                <!-- TÊN / TIÊU ĐỀ CÂU HỎI -->
+                <div class="nv-title-wrapper" style="margin-bottom: 8px;">
+                    <textarea class="auto-resize-textarea nv-title-textarea" oninput="autoResizeTextarea(this)" rows="1" placeholder="Nhập tiêu đề hoặc đề bài câu hỏi..."></textarea>
+                    <div class="print-text-display print-title-display" style="font-weight: 600;"></div>
+                </div>
+
+                <!-- KHUNG LỜI GIẢI, CÔNG THỨC & BẢNG BỔ SUNG -->
+                <div class="explanation-box">
+                    <div class="explanation-header">
+                        <label>📝 NỘI DUNG BÀI LÀM / LỜI GIẢI CHI TIẾT:</label>
+                        <div class="explanation-actions">
+                            <button class="btn btn-add-mcq btn-col" onclick="addMCQBlock('${nvDiv.id}')">🔘➕ Thêm Trắc Nghiệm</button>
+                            <button class="btn btn-add-formula btn-col" onclick="addFormulaBlock('${nvDiv.id}')">📐➕ Thêm Công Thức</button>
+                            <button class="btn btn-add-table btn-col" onclick="addTableBuilder('${nvDiv.id}')">📊➕ Thêm Bảng</button>
+                        </div>
+                    </div>
+
+                    <textarea class="auto-resize-textarea explanation-textarea" oninput="autoResizeTextarea(this)" rows="3" placeholder="Nhập câu trả lời, lời giải chi tiết, diễn giải..." style="margin-top: 8px;"></textarea>
+                    <div class="print-text-display print-exp-display"></div>
+
+                    <!-- KHU VỰC HIỂN THỊ CÁC CÔNG THỨC, BẢNG VÀ TRẮC NGHIỆM DẠNG DANH SÁCH -->
+                    <div class="dynamic-elements-container" id="dynamic-container-${nvDiv.id}"></div>
+                </div>
+            `;
+
+            container.appendChild(nvDiv);
+            updateNVIndexes();
+        }
+
+        /* ===================================================
+           XỬ LÝ THÊM TRẮC NGHIỆM (A, B, C, D)
+           =================================================== */
+        function addMCQBlock(nvId) {
+            mcqCount++;
+            const container = document.getElementById(`dynamic-container-${nvId}`);
+            if (!container) return;
+
+            const mcqId = `mcq-${mcqCount}`;
+            const mcqDiv = document.createElement('div');
+            mcqDiv.className = 'mcq-builder-container';
+            mcqDiv.id = mcqId;
+
+            mcqDiv.innerHTML = `
+                <div class="mcq-header btn-col">
+                    <span>Nội dung Trắc Nghiệm (Chọn 1 đáp án đúng):</span>
+                    <button class="btn btn-delete-table" onclick="document.getElementById('${mcqId}').remove()">❌ Xóa Trắc Nghiệm</button>
+                </div>
+                <div class="mcq-options-grid">
+                    <div class="mcq-option-item">
+                        <input type="radio" name="radio-${mcqId}" value="A" id="opt-a-${mcqId}">
+                        <label for="opt-a-${mcqId}">A.</label>
+                        <textarea class="auto-resize-textarea" oninput="autoResizeTextarea(this)" rows="1" placeholder="Nhập nội dung đáp án A..."></textarea>
+                    </div>
+                    <div class="mcq-option-item">
+                        <input type="radio" name="radio-${mcqId}" value="B" id="opt-b-${mcqId}">
+                        <label for="opt-b-${mcqId}">B.</label>
+                        <textarea class="auto-resize-textarea" oninput="autoResizeTextarea(this)" rows="1" placeholder="Nhập nội dung đáp án B..."></textarea>
+                    </div>
+                    <div class="mcq-option-item">
+                        <input type="radio" name="radio-${mcqId}" value="C" id="opt-c-${mcqId}">
+                        <label for="opt-c-${mcqId}">C.</label>
+                        <textarea class="auto-resize-textarea" oninput="autoResizeTextarea(this)" rows="1" placeholder="Nhập nội dung đáp án C..."></textarea>
+                    </div>
+                    <div class="mcq-option-item">
+                        <input type="radio" name="radio-${mcqId}" value="D" id="opt-d-${mcqId}">
+                        <label for="opt-d-${mcqId}">D.</label>
+                        <textarea class="auto-resize-textarea" oninput="autoResizeTextarea(this)" rows="1" placeholder="Nhập nội dung đáp án D..."></textarea>
+                    </div>
+                </div>
+            `;
+
+            // Khung hiển thị riêng khi in
+            const printMcqDiv = document.createElement('div');
+            printMcqDiv.className = 'print-mcq-display';
+            printMcqDiv.id = `print-${mcqId}`;
+
+            container.appendChild(mcqDiv);
+            container.appendChild(printMcqDiv);
+        }
+
+        /* ===================================================
+           XỬ LÝ THÊM NHIỀU CÔNG THỨC TOÁN HỌC TRONG 1 CÂU
+           =================================================== */
+        function addFormulaBlock(nvId) {
+            formulaCount++;
+            const container = document.getElementById(`dynamic-container-${nvId}`);
+            if (!container) return;
+
+            const fId = `formula-${formulaCount}`;
+            const fDiv = document.createElement('div');
+            fDiv.className = 'formula-builder-container';
+            fDiv.id = fId;
+
+            fDiv.innerHTML = `
+                <div class="formula-builder-toolbar btn-col">
+                    <span>Chèn thành phần:</span>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', 'input')">Số/Chữ</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', 'fraction')">Phân số (Tử/Mẫu)</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', 'power')">Lũy thừa (xʸ)</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', '+')">+</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', '-')">-</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', '×')">×</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', '÷')">÷</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', '=')">=</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', '(')">(</button>
+                    <button class="btn-formula-op" onclick="addFormulaElement('${fId}', ')')">)</button>
+                    <button class="btn btn-delete-table" style="margin-left: auto;" onclick="document.getElementById('${fId}').remove()">❌ Xóa Công Thức Này</button>
+                </div>
+                <div class="formula-container">
+                    <div class="formula-editor" id="editor-${fId}"></div>
+                </div>
+                <div class="print-formula-display" id="print-${fId}"></div>
+            `;
+
+            container.appendChild(fDiv);
+            // Tự động chèn 1 ô input ban đầu cho tiện thao tác
+            addFormulaElement(fId, 'input');
+        }
+
+        function addFormulaElement(fId, type) {
+            const editor = document.getElementById(`editor-${fId}`);
+            if (!editor) return;
+
+            const wrapper = document.createElement('span');
+            wrapper.className = 'formula-item-wrapper';
+
+            let contentHTML = '';
+
+            if (type === 'fraction') {
+                contentHTML = `
+                    <div class="math-fraction">
+                        <div class="numerator"><input type="text" placeholder="Tử số" oninput="autoResizeFormulaInput(this)"></div>
+                        <div class="denominator"><input type="text" placeholder="Mẫu số" oninput="autoResizeFormulaInput(this)"></div>
+                    </div>
+                `;
+            } else if (type === 'power') {
+                contentHTML = `
+                    <div class="math-power">
+                        <input type="text" class="base-input" placeholder="Cơ số" oninput="autoResizeFormulaInput(this)">
+                        <input type="text" class="exponent-input" placeholder="Mũ" oninput="autoResizeFormulaInput(this)">
+                    </div>
+                `;
+            } else if (type === 'input') {
+                contentHTML = `<input type="text" class="math-input" placeholder="..." oninput="autoResizeFormulaInput(this)">`;
+            } else {
+                contentHTML = `<span class="math-symbol">${type}</span>`;
+            }
+
+            wrapper.innerHTML = contentHTML + `<span class="btn-remove-elem" onclick="this.parentElement.remove()">×</span>`;
+            editor.appendChild(wrapper);
+
+            const newInputs = wrapper.querySelectorAll('input');
+            newInputs.forEach(input => autoResizeFormulaInput(input));
+        }
+
+        /* ===================================================
+           XỬ LÝ THÊM NHIỀU BẢNG TÙY CHỈNH TRONG 1 CÂU
+           =================================================== */
+        function addTableBuilder(nvId) {
+            tableCount++;
+            const container = document.getElementById(`dynamic-container-${nvId}`);
+            if (!container) return;
+
+            const tId = `table-builder-${tableCount}`;
+            const tDiv = document.createElement('div');
+            tDiv.id = tId;
+
+            tDiv.innerHTML = `
+                <div class="custom-table-builder btn-col">
+                    <span>Cấu hình bảng - Số hàng:</span>
+                    <input type="number" id="rows-${tId}" value="2" min="1" max="15">
+                    <span>Số cột:</span>
+                    <input type="number" id="cols-${tId}" value="3" min="1" max="10">
+                    <button class="btn btn-add-table" onclick="createCustomTable('${tId}')">Tạo Bảng</button>
+                    <button class="btn btn-delete-table" onclick="document.getElementById('${tId}').remove()">Hủy</button>
+                </div>
+                <div class="custom-table-wrapper" id="wrapper-${tId}"></div>
+            `;
+
+            container.appendChild(tDiv);
+        }
+
+        // Tạo bảng tùy chỉnh
+        function createCustomTable(tId) {
+            const rowsInput = document.getElementById(`rows-${tId}`).value;
+            const colsInput = document.getElementById(`cols-${tId}`).value;
+            const wrapper = document.getElementById(`wrapper-${tId}`);
+
+            const rows = parseInt(rowsInput) || 2;
+            const cols = parseInt(colsInput) || 3;
+
+            let html = `
+                <div style="margin-top: 6px; margin-bottom: 8px;">
+                    <table class="explanation-custom-table">
+            `;
+
+            for (let r = 0; r < rows; r++) {
+                html += `<tr>`;
+                for (let c = 0; c < cols; c++) {
+                    html += `<td><input type="text" placeholder="..."></td>`;
+                }
+                html += `</tr>`;
+            }
+
+            html += `
+                    </table>
+                    <div style="text-align: right; margin-top: 4px;">
+                        <button class="btn btn-delete-table btn-col" onclick="document.getElementById('${tId}').remove()">🗑️ Xóa Bảng Này</button>
+                    </div>
+                </div>
+            `;
+
+            wrapper.innerHTML = html;
+            // Ẩn thanh chọn hàng cột sau khi tạo
+            const builderBar = document.getElementById(tId).querySelector('.custom-table-builder');
+            if (builderBar) builderBar.style.display = 'none';
+        }
+
+        // Hàm xóa toàn bộ 1 khối Câu hỏi
+        function deleteNghiepVu(nvId) {
+            const nvBlock = document.getElementById(nvId);
+            if (nvBlock) {
+                nvBlock.remove();
+                updateNVIndexes();
+            }
+        }
+
+        // Cập nhật lại số thứ tự các Câu hỏi (CÂU 1, CÂU 2, CÂU 3...)
+        function updateNVIndexes() {
+            const blocks = document.querySelectorAll('.nv-block');
+            blocks.forEach((block, index) => {
+                block.querySelector('.nv-index').innerText = index + 1;
+            });
+        }
+
+        // ĐỒNG BỘ NỘI DUNG TỪ TEXTAREA, TRẮC NGHIỆM VÀ CÔNG THỨC SANG ĐỊNH DẠNG IN PDF
+        function prepareForPrint() {
+            const nvBlocks = document.querySelectorAll('.nv-block');
+
+            nvBlocks.forEach(block => {
+                // 1. Đồng bộ ô Tiêu đề Câu hỏi
+                const titleTextarea = block.querySelector('.nv-title-textarea');
+                const titleDisplay = block.querySelector('.print-title-display');
+                const titleWrapper = block.querySelector('.nv-title-wrapper');
+                
+                if (titleTextarea && titleDisplay) {
+                    const titleValue = titleTextarea.value.trim();
+                    if (titleValue === '') {
+                        if (titleWrapper) titleWrapper.classList.add('hide-on-print');
+                        titleDisplay.textContent = '';
+                    } else {
+                        if (titleWrapper) titleWrapper.classList.remove('hide-on-print');
+                        titleDisplay.textContent = titleValue;
+                    }
+                }
+
+                // 2. Đồng bộ Lời giải & Nội dung Textarea
+                const expTextarea = block.querySelector('.explanation-textarea');
+                const expDisplay = block.querySelector('.print-exp-display');
+
+                if (expTextarea && expDisplay) {
+                    expDisplay.textContent = expTextarea.value;
+                }
+
+                // 3. Đồng bộ Trắc nghiệm khi in
+                const mcqBlocks = block.querySelectorAll('.mcq-builder-container');
+                mcqBlocks.forEach(mcq => {
+                    const printDisplay = block.querySelector(`#print-${mcq.id}`);
+                    if (!printDisplay) return;
+
+                    const selectedRadio = mcq.querySelector('input[type="radio"]:checked');
+                    const selectedVal = selectedRadio ? selectedRadio.value : '';
+
+                    const textareas = mcq.querySelectorAll('.mcq-options-grid textarea');
+                    const options = ['A', 'B', 'C', 'D'];
+
+                    let html = '<div class="print-mcq-grid">';
+                    options.forEach((opt, idx) => {
+                        const val = textareas[idx] ? textareas[idx].value.trim() : '';
+                        const isChecked = selectedVal === opt;
+                        const mark = isChecked ? '☑️' : '🔘';
+                        const checkClass = isChecked ? 'selected' : '';
+                        html += `<div class="print-mcq-option ${checkClass}">${mark} <strong>${opt}.</strong> ${val}</div>`;
+                    });
+                    html += '</div>';
+
+                    printDisplay.innerHTML = html;
+                });
+
+                // 4. Đồng bộ TẤT CẢ các Công Thức trong khối
+                const formulaBlocks = block.querySelectorAll('.formula-builder-container');
+                formulaBlocks.forEach(fBlock => {
+                    const editor = fBlock.querySelector('.formula-editor');
+                    const printFormula = fBlock.querySelector('.print-formula-display');
+                    
+                    if (editor && printFormula) {
+                        printFormula.innerHTML = '';
+                        const items = editor.querySelectorAll('.formula-item-wrapper');
+                        
+                        items.forEach(item => {
+                            const frac = item.querySelector('.math-fraction');
+                            const pow = item.querySelector('.math-power');
+                            const input = item.querySelector('.math-input');
+                            const sym = item.querySelector('.math-symbol');
+
+                            if (frac) {
+                                const numVal = frac.querySelector('.numerator input').value || ' ';
+                                const denVal = frac.querySelector('.denominator input').value || ' ';
+                                const fracDiv = document.createElement('div');
+                                fracDiv.className = 'math-fraction';
+                                fracDiv.innerHTML = `<div class="numerator">${numVal}</div><div class="denominator">${denVal}</div>`;
+                                printFormula.appendChild(fracDiv);
+                            } else if (pow) {
+                                const baseVal = pow.querySelector('.base-input').value || ' ';
+                                const expVal = pow.querySelector('.exponent-input').value || ' ';
+                                const powSpan = document.createElement('span');
+                                powSpan.className = 'math-power';
+                                powSpan.innerHTML = `${baseVal}<sup>${expVal}</sup>`;
+                                printFormula.appendChild(powSpan);
+                            } else if (input) {
+                                const val = input.value || '';
+                                if (val) {
+                                    const span = document.createElement('span');
+                                    span.textContent = val;
+                                    printFormula.appendChild(span);
+                                }
+                            } else if (sym) {
+                                const span = document.createElement('span');
+                                span.style.fontWeight = 'bold';
+                                span.style.margin = '0 2px';
+                                span.textContent = sym.textContent;
+                                printFormula.appendChild(span);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        // Xuất file PDF / In bài làm
+        function exportPDF() {
+            const name = document.getElementById('fullName').value.trim();
+            const id = document.getElementById('studentId').value.trim();
+
+            if (!name || !id) {
+                alert('Vui lòng điền đầy đủ HỌ VÀ TÊN và MÃ SỐ SINH VIÊN trước khi in bài làm!');
+                return;
+            }
+
+            prepareForPrint();
+            window.print();
+        }
+    </script>
+</body>
+</html>
